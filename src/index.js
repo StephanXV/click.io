@@ -353,8 +353,6 @@ import TargetManager from "./TargetManager";
             // interfacciamento con TargetManager; Target non viene mai usato in index
             targetManager = new TargetManager(area, multiplier);
 
-            targetManager.init();
-
             let time = targetManager.getTime();
             menuContainer.removeChild(buttonStart);
             menuContainer.prepend(buttonReset);
@@ -381,8 +379,8 @@ import TargetManager from "./TargetManager";
 
         // game ended, prints result
         let printResult = function () {
-            console.log("Punteggio: " + targetManager.getScore() + " su " + targetManager.getCounter());
-            resultScore.innerText = "You hit " + targetManager.getScore() + " out of " + targetManager.getCounter() + " targets.";
+            console.log("Punteggio: " + targetManager.getScore());
+            resultScore.innerText = "Score: " + targetManager.getScore();
             wrapper.appendChild(resultView);
         };
 

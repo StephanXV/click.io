@@ -1,10 +1,14 @@
 import {setAttributes, setStyle} from "./utils";
 
 let Target = function(id) {
-    let targetArea; // target to click
-    let targetTimeout;
+    console.log("new Target()")
+
+    let targetArea; // area to click
+    let idTargetTimeout; // expiring time
 
     let init = (function() {
+        console.log("Target: init()")
+
         targetArea = document.createElement('div');
         let random = Math.random() + 0.4; // random target size, between 20px and 50px
         setStyle(targetArea, {
@@ -22,8 +26,10 @@ let Target = function(id) {
         }
 
         targetArea.addEventListener('click', (event) => {
+            console.log("Target: addingExpiringTimeout()")
+
             event.stopPropagation();
-            clearInterval(targetTimeout);
+            clearInterval(idTargetTimeout);
             this.detach();
             let e = new Event("destroy");
             targetArea.dispatchEvent(e); // dispatching destroy event on the click
@@ -32,6 +38,8 @@ let Target = function(id) {
     }).bind(this);
 
     this.attach = function(parentElement) {
+        console.log("Target: attach()")
+
         setStyle(targetArea, {
             left : Math.random() * (parentElement.offsetWidth - 50 - targetArea.offsetWidth) + "px",
             top : Math.random() * (parentElement.offsetHeight - 50 - targetArea.offsetHeight) + "px"
@@ -40,19 +48,27 @@ let Target = function(id) {
     };
 
     this.detach = function() {
+        console.log("Target: detach()")
+
         targetArea.parentElement.removeChild(targetArea);
     };
 
     this.handleEvent = function(eventType, callback) {
+        console.log("Target: handleEvent()")
+
         targetArea.addEventListener(eventType, callback.bind(this));
     }.bind(this);
 
     this.handleTimeout = function (callback, interval) {
-        targetTimeout = setTimeout(callback.bind(this), interval);
+        console.log("Target: handleTimeout()")
+
+        idTargetTimeout = setTimeout(callback.bind(this), interval);
     }.bind(this);
 
     this.reset = function() {
-        clearInterval(targetTimeout);
+        console.log("Target: reset()")
+
+        clearInterval(idTargetTimeout);
     };
 
     init();

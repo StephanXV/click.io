@@ -10,7 +10,19 @@ let setAttributes = function(element, attributes) {
     }
 };
 
+let removeFromList = function(list, target) {
+    let i;
+    for(let index in list) {
+        if(list[index] === target) {
+            i = index;
+            break;
+        }
+    }
+    return list.splice(i, 1);
+}
+
 export {
     setStyle,
-    setAttributes
+    setAttributes,
+    removeFromList
 }
