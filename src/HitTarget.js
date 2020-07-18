@@ -1,4 +1,6 @@
 import {setAttributes, setStyle} from "./utils";
+import PlusOne from "./img/+1.png";
+import MinusOne from "./img/-1.png";
 
 let HitTarget = function(id) {
     console.log("new HitTarget()");
@@ -15,7 +17,7 @@ let HitTarget = function(id) {
             width: random * 50 +'px',
             height: random * 50 +'px',
             borderRadius: '50%',
-            backgroundColor: 'black',
+            backgroundColor: 'red',
             position: 'absolute',
         });
 
@@ -30,7 +32,7 @@ let HitTarget = function(id) {
 
             event.stopPropagation();
             clearInterval(idTargetTimeout);
-            this.detach();
+            this.showPlusOne()
             let e = new Event("destroy");
             targetArea.dispatchEvent(e); // dispatching destroy event on the click
         });
@@ -51,8 +53,7 @@ let HitTarget = function(id) {
 
     this.detach = function() {
         console.log("HitTarget: detach()")
-
-        targetArea.parentElement.removeChild(targetArea);
+        this.showMinusOne();
     };
 
     this.handleEvent = function(eventType, callback) {
@@ -72,6 +73,45 @@ let HitTarget = function(id) {
 
         clearInterval(idTargetTimeout);
     };
+
+    this.showPlusOne = function() {
+        const plusOne = new Image();
+        plusOne.src = PlusOne;
+
+        setStyle(targetArea, {
+            backgroundColor: 'white'
+        })
+
+        setStyle(plusOne, {
+            width: '50px',
+            height: '50px',
+        })
+
+        targetArea.appendChild(plusOne);
+        setTimeout(function() {
+            targetArea.removeChild(plusOne);
+        }, 1000);
+    }
+
+
+    this.showMinusOne = function() {
+        const minusOne = new Image();
+        minusOne.src = MinusOne;
+
+        setStyle(targetArea, {
+            backgroundColor: 'white'
+        })
+
+        setStyle(minusOne, {
+            width: '50px',
+            height: '50px',
+        })
+
+        targetArea.appendChild(minusOne);
+        setTimeout(function() {
+            targetArea.removeChild(minusOne);
+        }, 1000);
+    }
 
     init();
 };

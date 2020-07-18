@@ -1,4 +1,6 @@
 import {setAttributes, setStyle} from "./utils";
+import PlusOne from "./img/+1.png";
+import MinusOne from "./img/-1.png";
 
 let AvoidTarget = function(id) {
     console.log("new AvoidTarget()");
@@ -15,7 +17,7 @@ let AvoidTarget = function(id) {
             width: random * 50 +'px',
             height: random * 50 +'px',
             borderRadius: '50%',
-            backgroundColor: 'blue',
+            backgroundColor: 'green',
             position: 'absolute',
         });
 
@@ -30,7 +32,7 @@ let AvoidTarget = function(id) {
 
             event.stopPropagation();
             clearInterval(idTargetTimeout);
-            this.detach();
+            this.showMinusOne();
             let e = new Event("destroy");
             targetArea.dispatchEvent(e); // dispatching destroy event on the click
         });
@@ -43,15 +45,15 @@ let AvoidTarget = function(id) {
         console.log("AvoidTarget: attach()")
 
         setStyle(targetArea, {
-            left : Math.random() * (parentElement.offsetWidth - 50 - targetArea.offsetWidth) + "px",
-            top : Math.random() * (parentElement.offsetHeight - 50 - targetArea.offsetHeight) + "px"
+            left : Math.random() * (parentElement.offsetWidth - 100 - targetArea.offsetWidth) + "px",
+            top : Math.random() * (parentElement.offsetHeight - 100 - targetArea.offsetHeight) + "px"
         });
         parentElement.appendChild(targetArea);
     };
 
     this.detach = function() {
         console.log("AvoidTarget: detach()")
-        targetArea.parentElement.removeChild(targetArea);
+        this.showPlusOne();
     };
 
     this.handleEvent = function(eventType, callback) {
@@ -71,6 +73,45 @@ let AvoidTarget = function(id) {
 
         clearInterval(idTargetTimeout);
     };
+
+    this.showPlusOne = function() {
+        const plusOne = new Image();
+        plusOne.src = PlusOne;
+
+        setStyle(targetArea, {
+            backgroundColor: 'white'
+        })
+
+        setStyle(plusOne, {
+            width: '50px',
+            height: '50px',
+        })
+
+        targetArea.appendChild(plusOne);
+        setTimeout(function() {
+            targetArea.removeChild(plusOne);
+        }, 1000);
+    }
+
+
+    this.showMinusOne = function() {
+        const minusOne = new Image();
+        minusOne.src = MinusOne;
+
+        setStyle(targetArea, {
+            backgroundColor: 'white'
+        })
+
+        setStyle(minusOne, {
+            width: '50px',
+            height: '50px',
+        })
+
+        targetArea.appendChild(minusOne);
+        setTimeout(function() {
+            targetArea.removeChild(minusOne);
+        }, 1000);
+    }
 
     init();
 };
