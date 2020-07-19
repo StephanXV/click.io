@@ -5,10 +5,20 @@ import MinusOne from "./img/-1.png";
 let AvoidTarget = function(id) {
     console.log("new AvoidTarget()");
 
-    let targetArea; // area to click
+    let targetArea; // area to avoid
     let idTargetTimeout; // expiring time
 
-    let init = (function() {
+    this.handleClick = function(event) {
+        console.log("AvoidTarget: addingExpiringTimeout()")
+
+        event.stopPropagation();
+        clearInterval(idTargetTimeout);
+        this.showMinusOne();
+        let e = new Event("destroy");
+        targetArea.dispatchEvent(e); // dispatching destroy event on the click
+    }.bind(this);
+
+    let init = function() {
         console.log("AvoidTarget: init()")
 
         targetArea = document.createElement('div');
@@ -27,19 +37,9 @@ let AvoidTarget = function(id) {
             });
         }
 
-        targetArea.addEventListener('click', (event) => {
-            console.log("AvoidTarget: addingExpiringTimeout()")
+        targetArea.addEventListener('click', this.handleClick);
 
-            event.stopPropagation();
-            clearInterval(idTargetTimeout);
-            this.showMinusOne();
-            let e = new Event("destroy");
-            targetArea.dispatchEvent(e); // dispatching destroy event on the click
-        });
-
-    }).bind(this);
-
-    this.getTargetArea = () => targetArea;
+    }.bind(this);
 
     this.attach = function(parentElement) {
         console.log("AvoidTarget: attach()")
@@ -88,10 +88,11 @@ let AvoidTarget = function(id) {
         })
 
         targetArea.appendChild(plusOne);
+        targetArea.removeEventListener('click', this.handleClick);
         setTimeout(function() {
             targetArea.removeChild(plusOne);
         }, 1000);
-    }
+    };
 
 
     this.showMinusOne = function() {
@@ -108,6 +109,7 @@ let AvoidTarget = function(id) {
         })
 
         targetArea.appendChild(minusOne);
+        targetArea.removeEventListener('click', this.handleClick);
         setTimeout(function() {
             targetArea.removeChild(minusOne);
         }, 1000);

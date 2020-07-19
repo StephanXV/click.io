@@ -77,7 +77,7 @@ let TargetManager = function(area, multiplier) {
     this.getTime = () => time;
 
     // funzione che dà inizio alla creazione dei target
-    let init = (function() {
+    let init = function() {
         console.log("TargetManager: init()")
 
         inGame = true;
@@ -90,7 +90,7 @@ let TargetManager = function(area, multiplier) {
 
         // intervallo che permette di decrementare ogni secondo il tempo rimanente
         idTimerInterval = setInterval(decreaseTimer, 1000);
-    }).bind(this);
+    }.bind(this);
 
     // rinizializza il manager
     this.reset = function() {
@@ -112,7 +112,7 @@ let TargetManager = function(area, multiplier) {
     }
 
     // crea un target e lo mostra a video
-    this.createNewTarget = (function() {
+    this.createNewTarget = function() {
         console.log("TargetManager: createNewTarget()")
 
         let target;
@@ -124,15 +124,15 @@ let TargetManager = function(area, multiplier) {
         }
 
         this.append(target);
-    }).bind(this);
+    }.bind(this);
 
     // stoppa la creazione di nuovi target e aspetta che l'ultimo target venga hittato o scompaia tramite un timeout
-    this.setupGameTimeout = (function() {
+    this.setupGameTimeout = function() {
         console.log("TargetManager: setupGameTimeout()")
 
         clearInterval(idInterval);
         idEndGame = setTimeout(stopGame, targetTime * 1000);
-    }).bind(this);
+    }.bind(this);
 
     // stoppa il gioco
     let stopGame = function() {

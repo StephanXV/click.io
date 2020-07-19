@@ -8,7 +8,18 @@ let HitTarget = function(id) {
     let targetArea; // area to click
     let idTargetTimeout; // expiring time
 
-    let init = (function() {
+    this.handleClick = function(event) {
+        console.log("AvoidTarget: addingExpiringTimeout()")
+
+        event.stopPropagation();
+        clearInterval(idTargetTimeout);
+        this.showPlusOne();
+        let e = new Event("destroy");
+        targetArea.dispatchEvent(e); // dispatching destroy event on the click
+    }.bind(this);
+
+
+    let init = function() {
         console.log("HitTarget: init()")
 
         targetArea = document.createElement('div');
@@ -27,17 +38,9 @@ let HitTarget = function(id) {
             });
         }
 
-        targetArea.addEventListener('click', (event) => {
-            console.log("HitTarget: addingExpiringTimeout()")
+        targetArea.addEventListener('click', this.handleClick);
 
-            event.stopPropagation();
-            clearInterval(idTargetTimeout);
-            this.showPlusOne()
-            let e = new Event("destroy");
-            targetArea.dispatchEvent(e); // dispatching destroy event on the click
-        });
-
-    }).bind(this);
+    }.bind(this);
 
     this.getTargetArea = () => targetArea;
 
@@ -88,6 +91,7 @@ let HitTarget = function(id) {
         })
 
         targetArea.appendChild(plusOne);
+        targetArea.removeEventListener('click', this.handleClick);
         setTimeout(function() {
             targetArea.removeChild(plusOne);
         }, 1000);
@@ -108,6 +112,7 @@ let HitTarget = function(id) {
         })
 
         targetArea.appendChild(minusOne);
+        targetArea.removeEventListener('click', this.handleClick);
         setTimeout(function() {
             targetArea.removeChild(minusOne);
         }, 1000);
