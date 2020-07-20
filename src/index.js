@@ -5,6 +5,7 @@ import TargetManager from "./TargetManager";
 {
     let aimIo = function() {
 
+        // font import
         let font = document.createElement('link');
         setAttributes(font, {
             href: 'https://fonts.googleapis.com/css?family=Iceland',
@@ -316,6 +317,7 @@ import TargetManager from "./TargetManager";
             event.preventDefault();
         });
 
+        // rimozione interfaccia di gioco e reset degli intervalli
         let reset = function() {
             leftbar.removeChild(scoreContainer);
             leftbar.removeChild(timerContainer);
@@ -333,7 +335,8 @@ import TargetManager from "./TargetManager";
         let targetManager;
 
         let startGame = function() {
-            // retrieve game settings
+
+            // raccolta livello di difficoltà
             let multiplier;
             console.log("Difficulty chosen: " + diffValue.innerText);
             switch(diffValue.innerText) {
@@ -350,9 +353,10 @@ import TargetManager from "./TargetManager";
                     multiplier = 1.5;
             }
 
-            // interfacciamento con TargetManager; Target non viene mai usato in index
+            // interfacciamento con TargetManager; Target non viene mai usato qui
             targetManager = new TargetManager(area, multiplier);
 
+            // aggiunta interfaccia di gioco
             menuContainer.removeChild(buttonStart);
             menuContainer.prepend(buttonReset);
             timer.innerText = 'Time left: ' + targetManager.getTime();
@@ -360,12 +364,12 @@ import TargetManager from "./TargetManager";
             leftbar.appendChild(scoreContainer);
 
 
-
+            // counter
             timeInterval = setInterval(function() {
                 timer.innerText = 'Time left: ' + targetManager.getTime()
             }, 1000);
 
-            // asks targetManager for score and time infos
+            // intervallo per raccogliere info aggiornate in tempo reale
             gameChecker = setInterval(function() {
                 score.innerText = 'Score: ' + targetManager.getScore();
                 if (!targetManager.isInGame()) {
@@ -376,7 +380,7 @@ import TargetManager from "./TargetManager";
             }, 50);
         };
 
-        // game ended, prints result
+        // gioco finito, mostra lo score finale
         let printResult = function () {
             console.log("Punteggio: " + targetManager.getScore());
             resultScore.innerText = "Score: " + targetManager.getScore();
