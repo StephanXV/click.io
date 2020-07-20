@@ -10,9 +10,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "jquery": "^3.4.1"
-  },
   "devDependencies": {
     "file-loader": "^6.0.0",
     "webpack": "^4.42.1",
