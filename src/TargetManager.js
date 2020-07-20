@@ -1,66 +1,67 @@
-import AvoidTarget from "./AvoidTarget";
-import HitTarget from "./HitTarget";
+import Target from "./Target";
 import {removeFromList} from "./utils";
 
 let TargetManager = function(area, multiplier) {
     console.log("new TargetManager()")
 
-    let list = [];
-    let counter = 0;
-    let score = 0;
+    let list = []; // target attivi in un determinato momento
+    let counter = 0; // target totali creati
+    let score = 0; // punteggio
     let idInterval;
     let idTimeout;
     let idEndGame;
     let idTimerInterval;
     let inGame = false;
-    let targetTime = 1.2 * multiplier;
-    let time = 10;
-    let appearInterval = 0.6 * multiplier;
+    let targetTime = 1.1 * multiplier; // tempo di permanenza di un target
+    let time = 15; // tempo di gioco
+    let appearInterval = 0.6 * multiplier; // intervallo di apparizione di un nuovo target
 
-    this.newAvoidTarget = function(id) {
-        console.log("TargetManager: newAvoidTarget()")
+    // creazione di un target di tipo avoid
+    this.newTarget = function(type) {
+        console.log("TargetManager: newTarget(" + type + ")")
 
-        let avoidTarget = new AvoidTarget(id);
+        let target = new Target(type);
 
-        list.push(avoidTarget);
+        list.push(target);
         counter++;
 
-        avoidTarget.handleTimeout(function() {
-            console.log("Dodge! +1");
-            score++;
-            this.detach();
-        }, targetTime * 1000);
+        switch (type) {
+            case 0:
+                // schivato -> +1
+                target.handleTimeout(function() {
+                    console.log("Dodge! +1");
+                    score++;
+                    this.showPlusOne(); // this riferito al target
+                }, targetTime * 1000);
 
-        avoidTarget.handleEvent("destroy", function(target) {
-            console.log("Ouch! -1");
-            score--;
-            list = removeFromList(list, target);
-            console.log("Total targets after destroy: " + counter);
-        });
-        return avoidTarget;
-    };
+                // cliccato -> -1
+                target.handleEvent("destroy", function(target) {
+                    console.log("Ouch! -1");
+                    score--;
+                    list = removeFromList(list, target);
+                    console.log("Total targets after destroy: " + counter);
+                });
+                break;
 
-    this.newHitTarget = function(id) {
-        console.log("TargetManager: newHitTarget()")
+            case 1:
+                // mancato -> -1
+                target.handleTimeout(function() {
+                    console.log("Miss! -1");
+                    score--;
+                    this.detach();
+                }, targetTime * 1000);
 
-        let hitTarget = new HitTarget(id);
+                // colpito -> +1
+                target.handleEvent("destroy", function(target) {
+                    console.log("Hit! +1");
+                    score++;
+                    list = removeFromList(list, target);
+                    console.log("Total targets after destroy: " + counter);
+                });
+                break;
+        }
 
-        list.push(hitTarget);
-        counter++;
-
-        hitTarget.handleTimeout(function() {
-            console.log("Miss! -1");
-            score--;
-            this.detach();
-        }, targetTime * 1000);
-
-        hitTarget.handleEvent("destroy", function(target) {
-            console.log("Hit! +1");
-            score++;
-            list = removeFromList(list, target);
-            console.log("Total targets after destroy: " + counter);
-        });
-        return hitTarget;
+        return target;
     };
 
     // invoca attach sul target in input
@@ -118,9 +119,9 @@ let TargetManager = function(area, multiplier) {
         let target;
 
         if (Math.random() < 0.5) {
-            target = this.newAvoidTarget();
+            target = this.newTarget(0);
         } else {
-            target = this.newHitTarget();
+            target = this.newTarget(1);
         }
 
         this.append(target);

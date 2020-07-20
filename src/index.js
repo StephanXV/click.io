@@ -344,7 +344,7 @@ import TargetManager from "./TargetManager";
                     multiplier = 1;
                     break;
                 case "Hard":
-                    multiplier = 0.5;
+                    multiplier = 0.7;
                     break;
                 default:
                     multiplier = 1.5;
@@ -353,17 +353,16 @@ import TargetManager from "./TargetManager";
             // interfacciamento con TargetManager; Target non viene mai usato in index
             targetManager = new TargetManager(area, multiplier);
 
-            let time = targetManager.getTime();
             menuContainer.removeChild(buttonStart);
             menuContainer.prepend(buttonReset);
-            timer.innerText = '' + (time);
+            timer.innerText = 'Time left: ' + targetManager.getTime();
             leftbar.appendChild(timerContainer);
             leftbar.appendChild(scoreContainer);
 
 
 
             timeInterval = setInterval(function() {
-                timer.innerText = targetManager.getTime()
+                timer.innerText = 'Time left: ' + targetManager.getTime()
             }, 1000);
 
             // asks targetManager for score and time infos
