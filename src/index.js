@@ -50,7 +50,7 @@ let aimIo = function() {
     leftbar.appendChild(titleContainer);
 
     let title = document.createElement('h1');
-    title.innerText = 'Aim.io';
+    title.innerText = 'Click.io';
     setStyle(title, {
         fontFamily: 'Iceland'
     });
