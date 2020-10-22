@@ -1,7 +1,7 @@
 import {setStyle, setAttributes} from "./utils";
 import TargetManager from "./TargetManager";
 
-let aimIo = function() {
+let clickIo = function() {
 
     // font import
     let font = document.createElement('link');
@@ -55,6 +55,14 @@ let aimIo = function() {
         fontFamily: 'Iceland'
     });
     titleContainer.appendChild(title);
+
+    let description = document.createElement('p');
+    description.innerText = 'Benvenuto su Click.io. Il tuo scopo è quello di colpire i target rossi e di evitare quelli verdi. Buona fortuna!'
+    setStyle(description, {
+        fontFamily: 'Iceland'
+    });
+
+    titleContainer.appendChild(description);
 
     let menuContainer = document.createElement('div');
     setStyle(menuContainer, {
@@ -387,4 +395,5 @@ let aimIo = function() {
 
 
 };
-window.addEventListener('load', aimIo, false);
+
+window.addEventListener('load', clickIo, false);
