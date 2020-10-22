@@ -32,6 +32,7 @@ let TargetManager = function(area, multiplier) {
                     console.log("Dodge! +1");
                     score++;
                     this.showPlusOne(); // this riferito al target
+                    list = removeFromList(list, this);
                 }, targetTime * 1000);
 
                 // cliccato -> -1
@@ -48,7 +49,8 @@ let TargetManager = function(area, multiplier) {
                 target.handleTimeout(function() {
                     console.log("Miss! -1");
                     score--;
-                    this.detach();
+                    this.showMinusOne(); // this riferito al target
+                    list = removeFromList(list, this);
                 }, targetTime * 1000);
 
                 // colpito -> +1
@@ -76,6 +78,7 @@ let TargetManager = function(area, multiplier) {
     this.isInGame = () => inGame;
     this.getScore = () => score;
     this.getTime = () => time;
+    this.getList = () => list;
 
     // funzione che dà inizio alla creazione dei target
     let init = function() {

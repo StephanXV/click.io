@@ -183,16 +183,6 @@ let aimIo = function() {
         diffValue.innerText = difficulty;
     };
 
-    easyDiff.addEventListener("click", () => {
-        switchDifficulty(easyDiff.innerText);
-    });
-    mediumDiff.addEventListener("click", () => {
-        switchDifficulty(mediumDiff.innerText);
-    });
-    hardDiff.addEventListener("click", () => {
-        switchDifficulty(hardDiff.innerText);
-    });
-
     let timerContainer = document.createElement('div');
     setStyle(timerContainer, {
         width: '100%',
@@ -297,6 +287,16 @@ let aimIo = function() {
     });
     resultView.appendChild(resultButtonReset);
 
+    easyDiff.addEventListener("click", () => {
+        switchDifficulty(easyDiff.innerText);
+    });
+    mediumDiff.addEventListener("click", () => {
+        switchDifficulty(mediumDiff.innerText);
+    });
+    hardDiff.addEventListener("click", () => {
+        switchDifficulty(hardDiff.innerText);
+    });
+
     buttonStart.addEventListener("click", (event) => {
         startGame();
         event.preventDefault();
@@ -368,6 +368,7 @@ let aimIo = function() {
 
         // intervallo per raccogliere info aggiornate in tempo reale
         gameChecker = setInterval(function() {
+            console.log(targetManager.getList());
             score.innerText = 'Score: ' + targetManager.getScore();
             if (!targetManager.isInGame()) {
                 printResult();
